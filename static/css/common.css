@@ -1,0 +1,29 @@
+html,body{
+  height: 100%;
+}
+
+
+.float_rifht{
+  float: right;
+}
+.float_left{
+  float: left;
+}
+.full_screen{
+  width: 100%;
+  height: 100%;
+}
+.center{
+  text-align: center;
+}
+
+.font13{
+  font-size: 13px;
+
+}
+
+.clear{ clear:both}
+
+.hidden{
+  overflow:hidden
+}

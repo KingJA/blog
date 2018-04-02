@@ -1,13 +1,10 @@
 <template>
   <div class="page_article">
-
-
     <div class="wrap_content">
-
       <ul>
         <li class="item_article">
           <div class="wrap_title">
-            <p class="title">基于Jenkis搭建自动构建平台</p>
+            <router-link to="/detail" class="title">基于Jenkis搭建自动构建平台</router-link>
             <div class="wrap_sub_title">
               <span class="tag">[Android]</span>
               <span class="date">2018-10/02 10:22:08</span>
@@ -17,7 +14,7 @@
         </li>
         <li class="item_article">
           <div class="wrap_title">
-            <p class="title">小谈分布式存储</p>
+            <router-link to="/detail" class="title">小谈分布式存储</router-link>
             <div class="wrap_sub_title">
               <span class="tag">[end]</span>
               <span class="date">2018-10/02 10:22:08</span>

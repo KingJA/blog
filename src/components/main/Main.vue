@@ -3,9 +3,15 @@
 
     <div class="wrap_nav">
       <ul class="nav">
-        <li class="nav_item"><router-link to="/aboutme">About</router-link></li>
-        <li class="nav_item"><router-link to="/contact">Contact</router-link></li>
-        <li class="nav_item"><router-link to="/article">Article</router-link></li>
+        <li class="nav_item">
+          <router-link to="/aboutme">About</router-link>
+        </li>
+        <li class="nav_item">
+          <router-link to="/contact">Contact</router-link>
+        </li>
+        <li class="nav_item">
+          <router-link to="/article" id="nav_article">Article</router-link>
+        </li>
       </ul>
     </div>
 
@@ -15,8 +21,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  export default {
-  }
+  export default {}
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -31,7 +36,7 @@
           float right
           display block
           font-size px2rem(20)
-          line-height  px2rem(50)
+          line-height px2rem(50)
           margin-right px2rem(20)
           & > a
             padding-right px2rem(10)

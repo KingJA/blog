@@ -2,25 +2,14 @@
   <div class="page_article">
     <div class="wrap_content">
       <ul>
-        <li class="item_article">
+        <li class="item_article" v-for="article in articles">
           <div class="wrap_title">
-            <router-link to="/detail" class="title">基于Jenkis搭建自动构建平台</router-link>
+            <p to="/detail" class="title" @click="goDetail(article)">{{article.title}}</p>
             <div class="wrap_sub_title">
               <span class="tag">[Android]</span>
-              <span class="date">2018-10/02 10:22:08</span>
+              <span class="date">{{article.createtime}}</span>
             </div>
           </div>
-
-        </li>
-        <li class="item_article">
-          <div class="wrap_title">
-            <router-link to="/detail" class="title">小谈分布式存储</router-link>
-            <div class="wrap_sub_title">
-              <span class="tag">[end]</span>
-              <span class="date">2018-10/02 10:22:08</span>
-            </div>
-          </div>
-
         </li>
       </ul>
     </div>
@@ -29,7 +18,40 @@
 </template>
 
 <script type="text/ecmascript-6">
-  export default {}
+  import {mapMutations} from 'vuex'
+
+  export default {
+    data() {
+      return {
+        articles: []
+      }
+    },
+    mounted() {
+      this.$nextTick(function () {
+        console.log('mounted');
+        this.getArticles();
+      })
+    },
+    methods: {
+      getArticles: function () {
+        this.$http.post("http://10.1.6.186/api/article/all").then((response) => {
+          this.articles = response.data.resultData;
+        }).catch(function (error) {
+          console.log(error);
+        });
+      },
+      goDetail(article) {
+        this.fillArticle(article);
+        this.$router.push('/detail')
+      },
+      fillArticle(msg) {
+        this.saveArticle(msg);
+      },
+      ...mapMutations({
+        saveArticle: 'SAVE_ARTICLE'
+      })
+    }
+  }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

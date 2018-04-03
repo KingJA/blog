@@ -4,6 +4,9 @@
     <div class="wrap_nav">
       <ul class="nav">
         <li class="nav_item">
+          <router-link to="/edit">Edit</router-link>
+        </li>
+        <li class="nav_item">
           <router-link to="/aboutme">About</router-link>
         </li>
         <li class="nav_item">

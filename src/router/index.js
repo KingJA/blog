@@ -5,6 +5,7 @@ import AboutMe from '@/components/AboutMe/AboutMe'
 import Article from '@/components/Article/Article'
 import Contact from '@/components/Contact/Contact'
 import ArticleDetail from '@/components/ArticleDetail/ArticleDetail'
+import Edit from '@/components/Edit/Edit'
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
           path: '/detail',
           name: 'ArticleDetail',
           component: ArticleDetail
+        },
+        {
+          path: '/edit',
+          name: 'Edit',
+          component: Edit
         }
       ]
     }

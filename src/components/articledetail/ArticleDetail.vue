@@ -2,31 +2,39 @@
   <div class="page_article_detail">
     <div class="wrap_detail">
       <p class="title">{{article.title}}</p>
-      <vue-markdown :source="article.content"></vue-markdown>
+      <div  v-html="article.content" v-highlight class="markdown-body"></div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import {mapGetters} from 'vuex'
-  import VueMarkdown from 'vue-markdown' //直接作为一个组件引入
+  import VueMarkdown from 'vue-markdown'
+  import marked from 'marked'
   export default {
-    name: "article-detail",
+    data() {
+      return {
+        article: {}
+      }
+    },
     mounted: function () {
+      console.log(this.$route.query.id);
       this.$nextTick(function () {
-        document.getElementById('nav_article').className += ' router-link-exact-active';
+        this.getArticle();
       })
-    },
-    destroyed: function () {
-      document.getElementById('nav_article').className = '';
-    },
-    computed: {
-      ...mapGetters([
-        'article'
-      ])
     },
     components: {
       VueMarkdown // 声明组件
+    },
+    methods: {
+      getArticle: function () {
+        this.$http.get("http://10.1.6.186/api/article/get?id=" + this.$route.query.id).then((response) => {
+          this.article = response.data.resultData;
+          this.article.content=marked(this.article.content, { sanitize: true });
+          console.log(  this.article);
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
     }
   }
 </script>
@@ -36,9 +44,12 @@
   @import "../../common/stylus/color.styl"
   .page_article_detail
     .wrap_detail
-      width px2rem(1000)
+      width 60%
       margin 0 auto
-      margin-top px2rem(20)
+      padding-right px2rem(60)
+      padding-left px2rem(60)
+      padding-top px2rem(60)
+      padding-bottom px2rem(100)
       .title
         font-size px2rem(30)
 

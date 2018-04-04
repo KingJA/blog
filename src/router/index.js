@@ -33,16 +33,16 @@ export default new Router({
           component: Contact
         },
         {
-          path: '/detail',
-          name: 'ArticleDetail',
-          component: ArticleDetail
-        },
-        {
           path: '/edit',
           name: 'Edit',
           component: Edit
         }
       ]
+    },
+    {
+      path: '/detail',
+      name: 'ArticleDetail',
+      component: ArticleDetail
     }
   ]
 })

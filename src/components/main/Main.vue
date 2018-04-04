@@ -1,7 +1,6 @@
 <template>
   <div class="page_main">
-
-    <div class="wrap_nav">
+    <div class="wrap_nav border-1px" id="nav_head">
       <ul class="nav">
         <li class="nav_item">
           <router-link to="/edit">Edit</router-link>
@@ -17,9 +16,7 @@
         </li>
       </ul>
     </div>
-
     <router-view/>
-
   </div>
 </template>
 
@@ -30,26 +27,28 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../common/stylus/function.styl"
   @import "../../common/stylus/color.styl"
+  @import "../../common/stylus/mixin.styl"
   .page_main
     height 100%
     .wrap_nav
+      border-1px($bg_gray)
+      box-sizing border-box
       .nav
-        height px2rem(50)
         .nav_item
-          float right
-          display block
-          font-size px2rem(20)
-          line-height px2rem(50)
+          display inline-block
           margin-right px2rem(20)
+          height px2rem(55)
           & > a
+            text-decoration none
             padding-right px2rem(10)
             padding-left px2rem(10)
             display block
             line-height px2rem(50)
             color $font_3
             font-size px2rem(15)
+            border-bottom px2rem(5) solid rgba(0, 0, 0, 0)
             &.router-link-exact-active
               color $orange
-              border-bottom 2px solid $orange
+              border-bottom px2rem(5) solid $orange
 
 </style>

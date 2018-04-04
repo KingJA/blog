@@ -1,7 +1,7 @@
 <template>
   <div class="markdown">
     <div class="wrap_input">
-      <input type="text" class="title" v-model="title">
+      <input type="text" class="title" v-model="title" placeholder="Please input the title...">
     </div>
 
     <div id="editor">
@@ -27,13 +27,13 @@
     },
     methods: {
       save(value, render) {
-        console.log('title:'+this.title);
-        console.log('value:'+value);
-        this.$http.post("http://10.1.6.186/api/article/add", {
+        console.log('title:' + this.title);
+        console.log('value:' + value);
+        this.$http.post("http://10.1.6.186/api/article/add", this.$qs.stringify({
           title: this.title,
           content: value
 
-        }).then((response) => {
+        })).then((response) => {
           console.log(response.data.resultData);
         }).catch(function (error) {
           console.log(error);
@@ -48,15 +48,16 @@
   @import "../../common/stylus/color.styl"
   .wrap_input
     width: 80%;
-    margin: 0 auto;
+    margin: px2rem(10) auto auto
+
     .title
-      font-size px2rem(30)
-      line-height px2rem(50)
-      border-bottom 1px solid $divider
+      font-size px2rem(25)
+      line-height px2rem(40)
       margin-bottom px2rem(10)
       outline: none
       color $font_3
       width 100%
+      border 0
 
   #editor {
     margin: auto;

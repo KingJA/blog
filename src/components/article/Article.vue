@@ -4,7 +4,7 @@
       <ul>
         <li class="item_article" v-for="article in articles">
           <div class="wrap_title">
-            <p to="/detail" class="title" @click="goDetail(article)">{{article.title}}</p>
+            <p  class="title" @click="goDetail(article)">{{article.title}}</p>
             <div class="wrap_sub_title">
               <span class="tag">[Android]</span>
               <span class="date">{{article.createtime}}</span>
@@ -13,7 +13,6 @@
         </li>
       </ul>
     </div>
-
   </div>
 </template>
 
@@ -42,7 +41,8 @@
       },
       goDetail(article) {
         this.fillArticle(article);
-        this.$router.push('/detail')
+        // this.$router.push('/detail')
+        this.$router.push({  name:'ArticleDetail',query: { id:  article.article_id }});
       },
       fillArticle(msg) {
         this.saveArticle(msg);
@@ -63,9 +63,10 @@
       margin 0 auto
       margin-top px2rem(20)
       .item_article
+        list-style-type none
         padding px2rem(10)
         margin-bottom px2rem(10)
-        border-bottom 2px dotted $divider
+        border-bottom px2rem(2) dotted $divider_deep
         .wrap_title
           .title
             font-size px2rem(20)

@@ -1,8 +1,7 @@
 <template>
-  <div class="contact">
+  <div class="contact" ref="contact">
     <div class="wrap_contact">
-
-      <ul>
+      <ul class="setZero">
         <li class="item_info">
           <div class="wrap_email">
             <span class="title">email:</span>
@@ -15,6 +14,12 @@
             <span class="des">https://github.com/KingJA</span>
           </div>
         </li>
+        <li class="item_info">
+          <div class="wrap_email">
+            <span class="title">address:</span>
+            <span class="des">Wenzhou,Zhejiang</span>
+          </div>
+        </li>
       </ul>
 
 
@@ -24,7 +29,11 @@
 
 <script type="text/ecmascript-6">
   export default {
-    name: "contact"
+    name: "contact",
+    mounted() {
+      this.$nextTick(function () {
+      })
+    }
   }
 </script>
 
@@ -33,9 +42,13 @@
   @import "../../common/stylus/color.styl"
   .contact
     width 100%
-    height 100%
+    box-sizing border-box
+    background url('../../../static/img/bg_contact.jpg') no-repeat center center fixed
+    background-size cover
+    position absolute
+    top px2rem(55)
+    bottom 0
     padding-top px2rem(100)
-    background #eeeeee
     .wrap_contact
       background $white
       width px2rem(600)
@@ -52,7 +65,9 @@
           .title
             flex 1
             font-weight bold
+            color $font_6
           .des
             flex 5
+            color $font_9
 
 </style>

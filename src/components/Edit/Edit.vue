@@ -27,9 +27,7 @@
     },
     methods: {
       save(value, render) {
-        console.log('title:' + this.title);
-        console.log('value:' + value);
-        this.$http.post("http://10.1.6.186/api/article/add", this.$qs.stringify({
+        this.$http.post("/api/article/add", this.$qs.stringify({
           title: this.title,
           content: value
 

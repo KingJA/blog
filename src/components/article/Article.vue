@@ -33,7 +33,7 @@
     },
     methods: {
       getArticles: function () {
-        this.$http.post("http://10.1.6.186/api/article/all").then((response) => {
+        this.$http.post("/api/article/all").then((response) => {
           this.articles = response.data.resultData;
         }).catch(function (error) {
           console.log(error);

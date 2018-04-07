@@ -21,6 +21,7 @@ Vue.directive('highlight', (el) => {
   })
 });
 Vue.prototype.$http = Axios;
+Vue.prototype.$http.defaults.baseURL = 'http://192.168.1.102'
 Vue.prototype.$qs = qs;
 Vue.config.productionTip = false
 

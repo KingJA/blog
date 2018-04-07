@@ -6,10 +6,16 @@ import Article from '@/components/Article/Article'
 import Contact from '@/components/Contact/Contact'
 import ArticleDetail from '@/components/ArticleDetail/ArticleDetail'
 import Edit from '@/components/Edit/Edit'
+import Login from '@/components/Login/Login'
+import Admin from '@/components/Admin/Admin'
+import UserCenter from '@/components/UserCenter/UserCenter'
+import ArticleCenter from '@/components/ArticleCenter/ArticleCenter'
+
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -43,6 +49,28 @@ export default new Router({
       path: '/detail',
       name: 'ArticleDetail',
       component: ArticleDetail
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: Admin,
+      children: [
+        {
+          path: '/admin/user',
+          name: 'UserCenter',
+          component: UserCenter
+        },
+        {
+          path: '/admin/article',
+          name: 'ArticleCenter',
+          component: ArticleCenter
+        }
+      ]
     }
   ]
 })

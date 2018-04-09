@@ -59,14 +59,15 @@ export default new Router({
       path: '/admin',
       name: 'Admin',
       component: Admin,
+      redirect: '/user_center',
       children: [
         {
-          path: '/admin/user',
+          path: '/user_center',
           name: 'UserCenter',
           component: UserCenter
         },
         {
-          path: '/admin/article',
+          path: '/article_center',
           name: 'ArticleCenter',
           component: ArticleCenter
         }

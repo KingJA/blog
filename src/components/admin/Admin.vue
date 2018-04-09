@@ -4,15 +4,19 @@
       <div class="nav">
         <ul>
           <li>
-            <router-link to="/admin/article" class="item_nav">文章管理</router-link>
+            <router-link to="/user_center" class="item_nav">文章管理</router-link>
           </li>
          <li>
-           <router-link to="/admin/user" class="item_nav">用户管理</router-link>
+           <router-link to="/article_center" class="item_nav">用户管理</router-link>
          </li>
         </ul>
       </div>
+      <div class="content">
+        <router-view/>
+      </div>
     </div>
-    <router-view/>
+
+
   </div>
 </template>
 
@@ -26,18 +30,16 @@
   @import "../../common/stylus/function.styl"
   @import "../../common/stylus/color.styl"
   .wrap_admin
-    width 80%
-    margin 0 auto
+    width 100%
     .nav
+      background #7e8c8d
       text-align center
-      .action
-        border-bottom px2rem(5) solid $orange
       width 20%
       float left
       .item_nav
         line-height px2rem(50)
     .content
+      background #b29a6f
       float right
       width 80%
-      background #d7c610
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="article_center"> 文章中心</div>
+  <div class="article_center"><i class="fas fa-camera-retro fa-5x"></i></div>
 
 </template>
 

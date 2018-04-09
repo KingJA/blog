@@ -15,6 +15,13 @@ import hljs from 'highlight.js'
 import 'highlight.js/styles/googlecode.css'
 // import 'font-awesome/css/font-awesome.css'
 
+import fontawesome from '@fortawesome/fontawesome'
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+import solid from '@fortawesome/fontawesome-free-solid'
+
+fontawesome.library.add(solid)
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.directive('highlight', (el) => {
   let blocks = el.querySelectorAll('pre code')
   blocks.forEach((block) => {
@@ -22,8 +29,8 @@ Vue.directive('highlight', (el) => {
   })
 });
 Vue.prototype.$http = Axios;
-// Vue.prototype.$http.defaults.baseURL = 'http://192.168.1.102'
-Vue.prototype.$http.defaults.baseURL = 'http://10.1.6.186'
+Vue.prototype.$http.defaults.baseURL = 'http://192.168.1.102'
+// Vue.prototype.$http.defaults.baseURL = 'http://10.1.6.186'
 Vue.prototype.$qs = qs;
 Vue.config.productionTip = false
 

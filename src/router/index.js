@@ -10,6 +10,7 @@ import Login from '@/components/Login/Login'
 import Admin from '@/components/Admin/Admin'
 import UserCenter from '@/components/UserCenter/UserCenter'
 import ArticleCenter from '@/components/ArticleCenter/ArticleCenter'
+import Modify from '@/components/Modify/Modify'
 
 
 Vue.use(Router)
@@ -54,6 +55,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/modify',
+      name: 'Modify',
+      component: Modify
     },
     {
       path: '/admin',

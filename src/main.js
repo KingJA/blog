@@ -18,6 +18,10 @@ import 'highlight.js/styles/googlecode.css'
 import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import solid from '@fortawesome/fontawesome-free-solid'
+/*Element*/
+import Element from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(Element, { size: 'small' });
 
 fontawesome.library.add(solid)
 
@@ -29,8 +33,8 @@ Vue.directive('highlight', (el) => {
   })
 });
 Vue.prototype.$http = Axios;
-Vue.prototype.$http.defaults.baseURL = 'http://192.168.1.102'
-// Vue.prototype.$http.defaults.baseURL = 'http://10.1.6.186'
+// Vue.prototype.$http.defaults.baseURL = 'http://192.168.1.102'
+Vue.prototype.$http.defaults.baseURL = 'http://10.1.6.186'
 Vue.prototype.$qs = qs;
 Vue.config.productionTip = false
 

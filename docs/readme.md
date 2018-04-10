@@ -1,4 +1,4 @@
-* 路由框架
+* [博客]路由框架
 * reset,图标
 * px2rem
 * vue生命周期
@@ -17,3 +17,5 @@ this.$route.params.id
     position absolute
     top 头部高度
     bottom 0
+* [博客]font-awesome的使用
+* [博客]Element的使用

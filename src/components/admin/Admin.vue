@@ -1,5 +1,8 @@
 <template>
   <div class="page_admin">
+
+    <div class="head">
+    </div>
     <div class="wrap_admin">
       <div class="nav">
         <ul>
@@ -31,14 +34,26 @@
   @import "../../common/stylus/color.styl"
   .wrap_admin
     width 100%
+    display flex
     .nav
-      border solid #7e8c8d
+      border-right 1px solid $bg_gray
       text-align center
-      width 20%
-      float left
+      flex px2rem(100)
+      flex 1
       .item_nav
+        font-size px2rem(15)
+        color $font_9
         line-height px2rem(50)
+        display inline-block
+        width 100%
+        &:hover
+          background $orange_light
+        &.router-link-exact-active
+          color $orange
+          background $orange_light
     .content
-      float right
-      width 78%
+      flex 5
+  .head
+    background $orange
+    height px2rem(80)
 </style>

@@ -5,7 +5,8 @@
     </div>
 
     <div id="editor">
-      <mavon-editor style="height: 100%" ref="editor" @save="save" placeholder="开始输入..." v-model="article.content"></mavon-editor>
+      <mavon-editor style="height: 100%" ref="editor" @save="save" placeholder="开始输入..."
+                    v-model="article.content"></mavon-editor>
     </div>
   </div>
 
@@ -19,25 +20,34 @@
     name: 'editor',
     data() {
       return {
-        article:{}
+        article: {}
       }
     },
     components: {
       mavonEditor
     },
     mounted: function () {
-      this.article=this.$route.params.article;
+      this.article = this.$route.params.article;
     },
     methods: {
-      save(value, render) {
-        this.$http.post("/api/article/add", this.$qs.stringify({
-          title: this.title,
-          content: value
-
+      save() {
+        this.$http.post("/api/article/modify", this.$qs.stringify({
+          title: this.article.title,
+          id: this.article.id,
+          content: this.article.content
         })).then((response) => {
-          console.log(response.data.resultData);
+          if (response.data.resultCode === 0) {
+            this.showSuccess('修改成功');
+          }
         }).catch(function (error) {
           console.log(error);
+        });
+      },
+      showSuccess(msg) {
+        this.$notify({
+          title: '提示',
+          message: msg,
+          type: 'success'
         });
       }
     }

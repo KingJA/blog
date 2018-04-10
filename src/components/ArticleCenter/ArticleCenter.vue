@@ -1,13 +1,34 @@
 <template>
-  <div class="article_center">
+  <div class="article_center" v-loading="loading">
     <!-- If you are using the "Solid" style you can simply use the icon name -->
+    <div class="wrap_search">
+      <el-input placeholder="请输入搜索内容" v-model="keyword" class="input-with-select">
+        <el-select v-model="type" slot="prepend" placeholder="请选择">
+          <el-option label="标题" value="title"></el-option>
+          <el-option label="内容" value="content"></el-option>
+        </el-select>
+        <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+      </el-input>
+    </div>
+
+    <div class="wrap_tip" v-if="hasResult">
+      <span class="tip">以下为</span>
+      <span class="keyword">{{type==='title'?'标题':'内容'}}</span>
+      <span class="tip">中含有'</span>
+      <span class="keyword">{{keyword}}</span>
+      <span class="tip">'的文章</span>
+      <span class="all" @click="getArticles">显示全部</span>
+    </div>
     <ul>
       <li v-for="article in articles" class="item_article">
-        <p @click="goDetail(article)">{{article.title}}</p>
-        <div>
-          <span>{{article.createtime}}</span>
-          <font-awesome-icon icon="pen-square" class="ic_op"/>
-          <font-awesome-icon icon="trash" class="ic_op"/>
+        <p class="title">{{article.title}}</p>
+        <div class="sub_title">
+          <span class="date">{{article.createtime}}</span>
+          <div class="wrap_op">
+            <font-awesome-icon icon="pen-square" class="ic_op" @click="goDetail(article)"/>
+            <font-awesome-icon icon="trash" class="ic_op" @click="showDeleteDialog(article)"/>
+          </div>
+
         </div>
       </li>
     </ul>
@@ -22,6 +43,10 @@
   export default {
     data() {
       return {
+        hasResult: false,
+        type: '',
+        keyword: '',
+        loading: true,
         articles: []
       }
     },
@@ -30,22 +55,71 @@
     },
     mounted() {
       this.$nextTick(function () {
-        console.log('mounted');
         this.getArticles();
       })
     },
     methods: {
       getArticles: function () {
+        this.loading = true;
         this.$http.post("/api/article/all").then((response) => {
-          this.articles = response.data.resultData;
+          if (response.data.resultCode===0) {
+            this.articles = response.data.resultData;
+          }
+          this.loading = false;
+          this.hasResult = false;
         }).catch(function (error) {
+          this.loading = false;
           console.log(error);
         });
       },
       goDetail(article) {
-        this.$router.push({  name:'Modify',params: { article:  article }});
+        this.$router.push({name: 'Modify', params: {article: article}});
+      },
+      deleteArticle(article) {
+        this.$http.post("/api/article/delete", this.$qs.stringify({
+          id: article.id,
+        })).then((response) => {
+          if (response.data.resultCode === 0) {
+            this.articles.remove(article);
+            this.showSuccess('删除成功');
+          }
+        }).catch(function (error) {
+          console.log(error);
+        });
+      },
+      showDeleteDialog(article) {
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.deleteArticle(article);
+        }).catch(() => {
+          //取消
+        });
+      },
+      showSuccess(msg) {
+        this.$notify({
+          title: '提示',
+          message: msg,
+          type: 'success'
+        });
+      },
+      search() {
+        console.log("type:" + this.type + " keyword:" + this.keyword)
+        this.$http.post("/api/article/query", this.$qs.stringify({
+          type: this.type,
+          keyword: this.keyword
+        })).then((response) => {
+          if (response.data.resultCode === 0) {
+            this.hasResult = true;
+            this.articles = response.data.resultData;
+            this.showSuccess('查询成功');
+          }
+        }).catch(function (error) {
+          console.log(error);
+        });
       }
-
     }
   }
 </script>
@@ -54,10 +128,61 @@
   @import "../../common/stylus/function.styl"
   @import "../../common/stylus/color.styl"
   .article_center
+    min-height px2rem(600)
+    .wrap_search
+      width 80%
+      margin px2rem(20) 0 px2rem(20) px2rem(20)
+      .el-select .el-input
+        width px2rem(200)
+
+      .input-with-select .el-input-group__prepend
+        background-color #fff
+
+    .wrap_tip
+      margin-left px2rem(16)
+      &>span
+        display inline-block
+      .tip
+        color $font_9
+        font-size px2rem(16)
+      .keyword
+        color $orange
+        font-size px2rem(16)
+      .all
+        margin-left px2rem(50)
+        background $orange
+        border-radius  px2rem(2)
+        font-size px2rem(12)
+        color $white
+        padding px2rem(6) px2rem(12)
+        cursor pointer
     .item_article
-      border-bottom  dotted #b29a6f
-      .ic_op
-        width px2rem(26)
-        height px2rem(26)
+      border-bottom 2px dotted $bg_gray
+      padding px2rem(16)
+      .title
+        cursor pointer
+        font-size px2rem(20)
+        color $font_3
+        overflow hidden
+        white-space nowrap
+        text-overflow ellipsis
+        margin-bottom px2rem(12)
+        &:hover
+          color $orange
+      .sub_title
+        overflow hidden
+        .date
+          color $font_6
+          font-size px2rem(16)
+        .wrap_op
+          float right
+          margin-right px2rem(50)
+          .ic_op
+            margin-right px2rem(50)
+            width px2rem(26)
+            height px2rem(26)
+            cursor pointer
+            &:hover
+              color $orange
 
 </style>

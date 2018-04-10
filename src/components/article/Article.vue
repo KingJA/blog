@@ -42,7 +42,7 @@
       goDetail(article) {
         this.fillArticle(article);
         // this.$router.push('/detail')
-        this.$router.push({  name:'ArticleDetail',query: { id:  article.article_id }});
+        this.$router.push({  name:'ArticleDetail',query: { id:  article.id }});
       },
       fillArticle(msg) {
         this.saveArticle(msg);

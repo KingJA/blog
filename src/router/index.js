@@ -65,7 +65,7 @@ export default new Router({
       path: '/admin',
       name: 'Admin',
       component: Admin,
-      redirect: '/user_center',
+      redirect: '/article_center',
       children: [
         {
           path: '/user_center',

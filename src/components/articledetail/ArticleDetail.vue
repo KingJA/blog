@@ -1,5 +1,5 @@
 <template>
-  <div class="page_article_detail">
+  <div class="page_article_detail" v-loading="loading">
     <div class="wrap_detail">
       <p class="title">{{article.title}}</p>
       <div  v-html="article.content" v-highlight class="markdown-body"></div>
@@ -13,6 +13,7 @@
   export default {
     data() {
       return {
+        loading: true,
         article: {}
       }
     },
@@ -28,9 +29,11 @@
     methods: {
       getArticle: function () {
         this.$http.get("http://10.1.6.186/api/article/get?id=" + this.$route.query.id).then((response) => {
-          this.article = response.data.resultData;
-          this.article.content=marked(this.article.content, { sanitize: true });
-          console.log(  this.article);
+          if (response.data.resultCode===0) {
+            this.article = response.data.resultData;
+            this.article.content=marked(this.article.content, { sanitize: true });
+          }
+          this.loading = false;
         }).catch(function (error) {
           console.log(error);
         });
@@ -43,6 +46,7 @@
   @import "../../common/stylus/function.styl"
   @import "../../common/stylus/color.styl"
   .page_article_detail
+    height 100%
     .wrap_detail
       width 60%
       margin 0 auto

@@ -10,7 +10,6 @@
         <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
       </el-input>
     </div>
-
     <div class="wrap_tip" v-if="hasResult">
       <span class="tip">以下为</span>
       <span class="keyword">{{type==='title'?'标题':'内容'}}</span>
@@ -27,8 +26,9 @@
           <div class="wrap_op">
             <font-awesome-icon icon="pen-square" class="ic_op" @click="goDetail(article)"/>
             <font-awesome-icon icon="trash" class="ic_op" @click="showDeleteDialog(article)"/>
+            <font-awesome-icon :icon="publishStatus(article.published)" class="ic_op"
+                               @click="setPublishStatus(article)"/>
           </div>
-
         </div>
       </li>
     </ul>
@@ -50,6 +50,7 @@
         articles: []
       }
     },
+    computed: {},
     components: {
       FontAwesomeIcon
     },
@@ -59,10 +60,17 @@
       })
     },
     methods: {
+      publishStatus: function (published) {
+        if (published === 1) {
+          return 'eye-slash';
+        } else {
+          return 'eye';
+        }
+      },
       getArticles: function () {
         this.loading = true;
         this.$http.post("/api/article/all").then((response) => {
-          if (response.data.resultCode===0) {
+          if (response.data.resultCode === 0) {
             this.articles = response.data.resultData;
           }
           this.loading = false;
@@ -105,8 +113,8 @@
           type: 'success'
         });
       },
+      //搜索文章
       search() {
-        console.log("type:" + this.type + " keyword:" + this.keyword)
         this.$http.post("/api/article/query", this.$qs.stringify({
           type: this.type,
           keyword: this.keyword
@@ -119,6 +127,27 @@
         }).catch(function (error) {
           console.log(error);
         });
+      },
+      //设置发布状态
+      setPublishStatus(article) {
+        this.setProgress(true);
+        this.$http.post('/api/article/published', this.$qs.stringify({id: article.id}))
+          .then((response) => {
+            if (response.data.resultCode === 0) {
+              article.published=this.reversal(article.published);
+            }
+            this.setProgress(false);
+          })
+          .catch((error) => {
+            console.log('error:' + error)
+            this.setProgress(error);
+          });
+      },
+      setProgress(loading) {
+        this.loading = loading;
+      },
+      reversal(status) {
+        return status === 0 ? 1 : 0;
       }
     }
   }
@@ -140,7 +169,7 @@
 
     .wrap_tip
       margin-left px2rem(16)
-      &>span
+      & > span
         display inline-block
       .tip
         color $font_9
@@ -151,7 +180,7 @@
       .all
         margin-left px2rem(50)
         background $orange
-        border-radius  px2rem(2)
+        border-radius px2rem(2)
         font-size px2rem(12)
         color $white
         padding px2rem(6) px2rem(12)

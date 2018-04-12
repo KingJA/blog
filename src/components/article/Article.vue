@@ -1,5 +1,5 @@
 <template>
-  <div class="page_article">
+  <div class="page_article" v-loading="loading">
     <div class="wrap_content">
       <ul>
         <li class="item_article" v-for="article in articles">
@@ -22,6 +22,7 @@
   export default {
     data() {
       return {
+        loading: true,
         articles: []
       }
     },
@@ -34,7 +35,10 @@
     methods: {
       getArticles: function () {
         this.$http.post("/api/article/all").then((response) => {
-          this.articles = response.data.resultData;
+          if (response.data.resultCode===0) {
+            this.articles = response.data.resultData;
+          }
+          this.loading = false;
         }).catch(function (error) {
           console.log(error);
         });
@@ -58,10 +62,13 @@
   @import "../../common/stylus/function.styl"
   @import "../../common/stylus/color.styl"
   .page_article
+    position absolute
+    width 100%
+    top px2rem(55)
+    bottom 0
     .wrap_content
       width px2rem(1000)
       margin 0 auto
-      margin-top px2rem(20)
       .item_article
         list-style-type none
         padding px2rem(10)

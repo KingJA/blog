@@ -6,7 +6,7 @@
           <div class="wrap_title">
             <p  class="title" @click="goDetail(article)">{{article.title}}</p>
             <div class="wrap_sub_title">
-              <span class="tag">[Android]</span>
+              <span class="tag">[{{article.name}}]</span>
               <span class="date">{{article.createtime}}</span>
             </div>
           </div>

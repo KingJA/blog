@@ -34,12 +34,20 @@
           if (response.data.resultCode === 0) {
             console.log('登录成功');
             this.$router.push({name: 'Admin'});
+            this.setCookie("testcookie", "bbb", 1)
+            console.log('cookie:' + document.cookie);
           }
         }).catch((error) => {
           console.log(error);
         })
+      },
+      setCookie(key, value, iDay) {
+        let oDate = new Date();
+        oDate.setDate(oDate.getDate() + iDay);
+        document.cookie = key + '=' + value + ';expires=' + oDate;
       }
     }
+
   }
 </script>
 

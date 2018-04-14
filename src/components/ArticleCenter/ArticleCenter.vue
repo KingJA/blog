@@ -56,6 +56,7 @@
     },
     mounted() {
       this.$nextTick(function () {
+        console.log('cookie:' + document.cookie);
         this.getArticles();
       })
     },

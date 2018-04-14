@@ -28,7 +28,7 @@
     },
     mounted() {
       this.$nextTick(function () {
-        console.log('mounted');
+
         this.getArticles();
       })
     },

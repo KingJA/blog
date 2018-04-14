@@ -6,3 +6,4 @@
 * 全局变量
 * 加载中
 * JS  设置cookie、读取cookie、删除cookie
+* 封装 Axios

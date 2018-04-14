@@ -32,10 +32,9 @@
         })).then((response) => {
           console.log(response.data);
           if (response.data.resultCode === 0) {
-            console.log('登录成功');
+            console.log(response.data.resultData);
+            localStorage.setItem('api_token', response.data.resultData.jwt);
             this.$router.push({name: 'Admin'});
-            this.setCookie("testcookie", "bbb", 1)
-            console.log('cookie:' + document.cookie);
           }
         }).catch((error) => {
           console.log(error);

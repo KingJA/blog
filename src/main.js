@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './components/App'
 import router from './router'
 import './common/stylus/index.styl';
-import Axios from 'axios'
+// import Axios from 'axios'
 import store from './store'//相当于'./store/index'
 import 'normalize.css/normalize.css'
 import 'github-markdown-css/github-markdown.css'
@@ -19,6 +19,7 @@ import fontawesome from '@fortawesome/fontawesome'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import solid from '@fortawesome/fontawesome-free-solid'
 /*Element*/
+import Axios from '../static/js/http';
 import Element from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(Element, { size: 'small' });
@@ -33,8 +34,9 @@ Vue.directive('highlight', (el) => {
   })
 });
 Vue.prototype.$http = Axios;
-Vue.prototype.$http.defaults.withCredentials=true;
-Vue.prototype.$http.defaults.baseURL = 'http://192.168.1.105:8088'
+// Vue.prototype.$http.defaults.withCredentials=true;
+// Vue.prototype.$http.defaults.headers.common['token'] = 'kingja';
+// Vue.prototype.$http.defaults.baseURL = 'http://192.168.1.102:8088'
 // Vue.prototype.$http.defaults.baseURL = 'http://10.1.6.186'
 Vue.prototype.$qs = qs;
 Vue.config.productionTip = false

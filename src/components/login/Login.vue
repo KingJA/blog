@@ -26,10 +26,10 @@
     methods: {
       login() {
         console.log(this.username + ':' + this.password)
-        this.$http.post('/api/admin/login', this.$qs.stringify({
+        this.$http.post('/api/admin/login', {
           username: this.username,
           password: this.password
-        })).then((response) => {
+        }).then((response) => {
           console.log(response.data);
           if (response.data.resultCode === 0) {
             console.log(response.data.resultData);

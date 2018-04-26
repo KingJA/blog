@@ -9,3 +9,7 @@ export const msg = function (state) {
 export const article = function (state) {
   return state.article;
 };
+
+export const catalog_articles = function (state) {
+  return state.catalog_articles;
+};

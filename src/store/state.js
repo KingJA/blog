@@ -1,6 +1,7 @@
 const state = {
   count: 0,
   msg: '',
-  article:{}
+  article:{},
+  catalog_articles:{}
 }
 export default state

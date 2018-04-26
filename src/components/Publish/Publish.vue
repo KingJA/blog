@@ -35,7 +35,25 @@
     components: {
       mavonEditor
     },
+    watch: {
+      '$route'(to, from) {
+        console.log("to:"+to);
+        console.log("from:"+from);
+      },
+      '$route.params.catalogId': function (catalogId) {
+        console.log("watch catalogId:"+catalogId);
+      }
+    },
+    beforeCreate() {
+      console.log("beforeCreate");
+    },
+    created() {
+      console.log("created");
+      this.catalogid = this.$route.query.catalogId;
+      console.log('catalogid' + this.catalogid)
+    },
     mounted() {
+      console.log("mounted");
       this.$nextTick(function () {
         this.getCatalogs();
       })
@@ -43,12 +61,15 @@
     methods: {
       save(value, render) {
         console.log('name:' + this.catalogId)
-        this.$http.post("/api/article/add", this.$qs.stringify({
+        this.$http.post("/api/article/add", {
           title: this.title,
           catalogid: this.catalogid,
           content: value
-        })).then((response) => {
-          console.log(response.data.resultData);
+        }).then((response) => {
+          if (response.data.resultCode === 0) {
+            console.log('发布成功:');
+            this.$router.back()
+          }
         }).catch(function (error) {
           console.log(error);
         });

@@ -7,3 +7,5 @@
 * 加载中
 * JS  设置cookie、读取cookie、删除cookie
 * 封装 Axios
+* 用vuex进行类目/文章隐藏
+* 发布文章后返回要更新列表中的数据

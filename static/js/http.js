@@ -1,12 +1,12 @@
 import axios from 'axios'
 import qs from 'qs'
 
-axios.interceptors.request.use(config => {    // 这里的config包含每次请求的内容
-  // 判断localStorage中是否存在api_token
+// 这里的config包含每次请求的内容
+axios.interceptors.request.use(config => {
+  config.withCredentials = true;
+  config.baseURL = 'http://127.0.0.1:8088';
   if (localStorage.getItem('api_token')) {
-    //  存在将api_token写入 request header
-    config.headers.apiToken = `${localStorage.getItem('api_token')}`;
-    config.withCredentials=true;
+    config.headers.token = `${localStorage.getItem('api_token')}`;
   }
   return config;
 }, err => {
@@ -19,7 +19,7 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 });
 
-function checkStatus (response) {
+function checkStatus(response) {
   // 如果http状态码正常，则直接返回数据
   if (response && (response.status === 200 || response.status === 304 ||
       response.status === 400)) {
@@ -32,7 +32,7 @@ function checkStatus (response) {
   }
 }
 
-function checkCode (res) {
+function checkCode(res) {
   // 如果code异常(这里已经包括网络错误，服务器错误，后端抛出的错误)，可以弹出一个错误提示，告诉用户
   if (res.status === -404) {
     alert(res.msg)
@@ -42,19 +42,16 @@ function checkCode (res) {
   }
   return res
 }
+
 // 请求方式的配置
 export default {
-  post (url, data) {
+  post(url, data) {
     return axios({
       method: 'post',
-      baseURL: 'http://192.168.1.105:8088',
+      withCredentials: true,
       url,
       data: qs.stringify(data),
       timeout: 5000,
-      headers: {
-        // 'X-Requested-With': 'XMLHttpRequest',
-        // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      }
     }).then(
       (response) => {
         return checkStatus(response)
@@ -65,10 +62,9 @@ export default {
       }
     )
   },
-  get (url, params) {  // get
+  get(url, params) {  // get
     return axios({
       method: 'get',
-      baseURL: '/backapis',
       url,
       params, // get 请求时带的参数
       timeout: 5000,
@@ -84,5 +80,13 @@ export default {
         return checkCode(res)
       }
     )
+  }
+}
+
+function getToken() {
+  if (localStorage.getItem('api_token')) {
+    return localStorage.getItem('api_token')
+  } else {
+    return '';
   }
 }

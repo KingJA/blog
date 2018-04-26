@@ -10,6 +10,14 @@
 
     </div>
     <div class="wrap_content" v-loading="loading">
+      <div class="wrap_write">
+        <div class="write" @click="goPublish">
+          <font-awesome-icon icon="edit"/>
+          <span>写篇文章</span>
+        </div>
+      </div>
+
+
       <div class="wrap_search">
         <el-input placeholder="请输入搜索内容" v-model="keyword" class="input-with-select">
           <el-select v-model="type" slot="prepend" placeholder="请选择">
@@ -51,9 +59,11 @@
 <script type="text/ecmascript-6">
   import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
   import Vue from 'vue'
+
   export default {
     data() {
       return {
+        currentCatalogId: -1,
         classA: true,
         hasResult: false,
         type: '',
@@ -75,6 +85,9 @@
       })
     },
     methods: {
+      goPublish() {
+        this.$router.push({name: 'Publish', query: {catalogId: this.currentCatalogId}});
+      },
       publishStatus: function (published) {
         if (published === 1) {
           return 'eye-slash';
@@ -97,12 +110,25 @@
       },
       getArticlesByCatelogid: function (catalog) {
         this.setCatalogAction(catalog);
+        this.currentCatalogId=catalog.id;
+        //如果vuex里有缓存，则取缓存
+        let articles = this.$store.getters.catalog_articles[catalog.id];
+        if (articles) {
+          this.articles = articles;
+          console.log("缓存击中")
+          return;
+        }
+        //vuex中没缓存则进行网络请求
         this.loading = true;
-        this.$http.post("/api/article/articlesBycatalogId", this.$qs.stringify({
+        this.$http.post("/api/article/articlesBycatalogId", {
           catalogid: catalog.id,
-        })).then((response) => {
+        }).then((response) => {
           if (response.data.resultCode === 0) {
             this.articles = response.data.resultData;
+            this.$store.commit('SAVE_ARTICLES_BY_CATALOGID', {
+              catalogid: catalog.id,
+              articles: response.data.resultData
+            });
           }
           this.loading = false;
           this.hasResult = false;
@@ -125,10 +151,10 @@
         });
       },
       setCatalogAction(catalog) {
-        this.catalogs.forEach((item)=> {
-          if(catalog==item) {
+        this.catalogs.forEach((item) => {
+          if (catalog == item) {
             Vue.set(item, 'checked', true);
-          }else{
+          } else {
             Vue.set(item, 'checked', false);
           }
         })
@@ -216,7 +242,7 @@
     .catelogs
       border-right 1px solid $bg_gray
       flex 1
-      .item_catelog,.action
+      .item_catelog, .action
         cursor pointer
         font-size px2rem(15)
         color $font_9
@@ -228,9 +254,20 @@
           background $orange_light
       .action
         color $orange
+        background $orange_light
 
     .wrap_content
       flex 5
+      .wrap_write
+        text-align center
+        .write
+          color $orange
+          cursor pointer
+          font-size px2rem(15)
+          line-height px2rem(50)
+          display inline-block
+          text-align center
+          margin 0 auto
       .wrap_search
         width 80%
         margin px2rem(20) 0 px2rem(20) px2rem(20)

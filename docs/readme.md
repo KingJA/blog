@@ -19,3 +19,5 @@ this.$route.params.id
     bottom 0
 * [博客]font-awesome的使用
 * [博客]Element的使用
+* store.commit添加多个参数，用对象来传递
+* vue Resource interpreted as Stylesheet but transferred with MIME type text/html 问题，是router 路径问题

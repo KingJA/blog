@@ -28,7 +28,7 @@
     },
     methods: {
       getArticle: function () {
-        this.$http.get("http://10.1.6.186/api/article/get?id=" + this.$route.query.id).then((response) => {
+        this.$http.get("/api/article/get?id=" + this.$route.query.id).then((response) => {
           if (response.data.resultCode===0) {
             this.article = response.data.resultData;
             this.article.content=marked(this.article.content, { sanitize: true });

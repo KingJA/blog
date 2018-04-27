@@ -27,3 +27,6 @@ this.$route.params.id
     component: r => require.ensure([], () => r(require('@/components/Article/Article')), 'Article')
 }
 * vuex state和getter的区别，getter可以对数据进行一些处理，比如说过滤
+
+* 使用命名视图来解决部分视图需要缓存，其他不需要缓存的问题
+* Promise 的使用https://www.cnblogs.com/whybxy/p/7645578.html

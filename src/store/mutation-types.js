@@ -9,7 +9,11 @@ export const GET_ARTICLES_BY_CATALOGID='GET_ARTICLES_BY_CATALOGID'
 
 
 /*===============*/
-
+//article
 export const GET_ARTICLES='GET_ARTICLES_'
 export const GET_ARTICLES_SUCCESS='GET_ARTICLES_SUCCESS'
 export const GET_ARTICLES_FAIL='GET_ARTICLES_FAIL'
+//articleDetail
+export const GET_ARTICLE_BY_ARTICLEID='GET_ARTICLE_BY_ARTICLEID'
+//message
+export const SHOW_MESSAGE='SHOW_MESSAGE'

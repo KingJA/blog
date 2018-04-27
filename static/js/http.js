@@ -1,5 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
+import {Message} from 'element-ui';
+
 
 // 这里的config包含每次请求的内容
 axios.interceptors.request.use(config => {
@@ -43,6 +45,19 @@ function checkCode(res) {
   return res
 }
 
+function checkSuccess(res) {
+  if (res.data.resultCode === 0) {
+    return res;
+  } else {
+    Message({
+      message: res.data.resultText,
+      center: true,
+      type: 'error'
+    });
+    return Promise.reject(res);
+  }
+}
+
 // 请求方式的配置
 export default {
   post(url, data) {
@@ -57,8 +72,12 @@ export default {
         return checkStatus(response)
       }
     ).then(
-      (res) => {
-        return checkCode(res)
+      (response) => {
+        return checkCode(response)
+      }
+    ).then(
+      (response) => {
+        return checkSuccess(response)
       }
     )
   },

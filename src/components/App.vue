@@ -1,9 +1,11 @@
 <template>
   <div id="app">
+    <!-- 需要缓存的路由 -->
     <keep-alive>
-      <router-view/>
+      <router-view name="keepAliveRouter"></router-view>
     </keep-alive>
-
+    <!-- 不需要缓存的路由 -->
+    <router-view></router-view>
   </div>
 </template>
 

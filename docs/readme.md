@@ -21,3 +21,9 @@ this.$route.params.id
 * [博客]Element的使用
 * store.commit添加多个参数，用对象来传递
 * vue Resource interpreted as Stylesheet but transferred with MIME type text/html 问题，是router 路径问题
+* router延迟加载
+{
+    path: '/article',
+    component: r => require.ensure([], () => r(require('@/components/Article/Article')), 'Article')
+}
+* vuex state和getter的区别，getter可以对数据进行一些处理，比如说过滤

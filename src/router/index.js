@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Main from '@/components/Main/Main'
 import AboutMe from '@/components/AboutMe/AboutMe'
-import Article from '@/components/Article/Article'
 import Contact from '@/components/Contact/Contact'
 import ArticleDetail from '@/components/ArticleDetail/ArticleDetail'
 import Publish from '@/components/Publish/Publish'
@@ -27,17 +26,16 @@ export default new Router({
         {
           path: '/aboutme',
           name: 'AboutMe',
-          component: AboutMe
+          component: resolve => System.import('@/components/AboutMe/AboutMe')
         },
         {
           path: '/article',
-          name: 'Article',
-          component: Article
+          component: r => require.ensure([], () => r(require('@/components/Article/Article')), 'Article')
         },
         {
           path: '/contact',
           name: 'Contact',
-          component: Contact
+          component:resolve => require(['@/components/Contact/Contact'],resolve)
         },
         {
           path: '/publish',

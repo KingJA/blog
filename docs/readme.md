@@ -30,3 +30,4 @@ this.$route.params.id
 
 * 使用命名视图来解决部分视图需要缓存，其他不需要缓存的问题
 * Promise 的使用https://www.cnblogs.com/whybxy/p/7645578.html
+* Axios的封装 https://blog.csdn.net/quanquanxiu/article/details/76718468

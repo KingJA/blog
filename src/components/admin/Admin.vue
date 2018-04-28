@@ -1,6 +1,5 @@
 <template>
   <div class="page_admin">
-
     <div class="head">
     </div>
     <div class="wrap_admin">
@@ -18,17 +17,17 @@
         <keep-alive>
           <router-view/>
         </keep-alive>
-
       </div>
     </div>
-
-
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
-    name: "login"
+    name: "login",
+    created(){
+
+    }
   }
 </script>
 

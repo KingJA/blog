@@ -9,6 +9,9 @@ export const GET_ARTICLES_BY_CATALOGID='GET_ARTICLES_BY_CATALOGID'
 
 
 /*===============*/
+//loading
+export const SHOW_LOADING='SHOW_LOADING'
+export const HIDE_LOADING='HIDE_LOADING'
 //article
 export const GET_ARTICLES='GET_ARTICLES_'
 export const GET_ARTICLES_SUCCESS='GET_ARTICLES_SUCCESS'
@@ -17,3 +20,6 @@ export const GET_ARTICLES_FAIL='GET_ARTICLES_FAIL'
 export const GET_ARTICLE_BY_ARTICLEID='GET_ARTICLE_BY_ARTICLEID'
 //message
 export const SHOW_MESSAGE='SHOW_MESSAGE'
+//login
+export const LOGIN_SUCCESS='LOGIN_SUCCESS'
+export const LOGIN_FAIL='LOGIN_FAIL'

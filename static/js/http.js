@@ -7,8 +7,8 @@ import {Message} from 'element-ui';
 axios.interceptors.request.use(config => {
   config.withCredentials = true;
   config.baseURL = 'http://127.0.0.1:8088';
-  if (localStorage.getItem('api_token')) {
-    config.headers.token = `${localStorage.getItem('api_token')}`;
+  if (localStorage.getItem('jwt')) {
+    config.headers.token = `${localStorage.getItem('jwt')}`;
   }
   return config;
 }, err => {

@@ -97,7 +97,7 @@
       },
       getArticles: function () {
         this.loading = true;
-        this.$http.post("/api/article/all").then((response) => {
+        this.$http.post("/api/visitor/article/all").then((response) => {
           if (response.data.resultCode === 0) {
             this.articles = response.data.resultData;
           }
@@ -139,7 +139,7 @@
       },
       getCatelogs: function () {
         this.loading = true;
-        this.$http.get("/api/article/catalog").then((response) => {
+        this.$http.get("/api/admin/catalog").then((response) => {
           if (response.data.resultCode === 0) {
             this.catalogs = response.data.resultData;
           }

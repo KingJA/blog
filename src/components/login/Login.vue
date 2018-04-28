@@ -9,12 +9,14 @@
           <input type="password" placeholder="Password" class="input" v-model="password">
         </div>
       </div>
-      <p class="submit line" @click="login()">Submit</p>
+      <p class="submit line" @click="sumbit">Submit</p>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapState, mapActions} from 'vuex'
+
   export default {
     name: "login",
     data() {
@@ -24,21 +26,11 @@
       }
     },
     methods: {
-      login() {
-        console.log(this.username + ':' + this.password)
-        this.$http.post('/api/admin/login', this.$qs.stringify({
-          username: this.username,
-          password: this.password
-        })).then((response) => {
-          console.log(response.data);
-          if (response.data.resultCode === 0) {
-            console.log(response.data.resultData);
-            localStorage.setItem('api_token', response.data.resultData.jwt);
-            this.$router.push({name: 'Admin'});
-          }
-        }).catch((error) => {
-          console.log(error);
-        })
+      ...mapActions([
+        'login'
+      ]),
+      sumbit() {
+        this.login({username:this.username,password:this.password});
       },
       setCookie(key, value, iDay) {
         let oDate = new Date();

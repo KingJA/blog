@@ -10,11 +10,11 @@ import Admin from '@/components/Admin/Admin'
 import UserCenter from '@/components/UserCenter/UserCenter'
 import ArticleCenter from '@/components/ArticleCenter/ArticleCenter'
 import Modify from '@/components/Modify/Modify'
-
+import {checkLogined} from '@/common/js/userUtils'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -35,7 +35,7 @@ export default new Router({
         {
           path: '/contact',
           name: 'Contact',
-          component:resolve => require(['@/components/Contact/Contact'],resolve)
+          component: resolve => require(['@/components/Contact/Contact'], resolve)
         },
         {
           path: '/publish',
@@ -47,7 +47,8 @@ export default new Router({
     {
       path: '/detail',
       name: 'ArticleDetail',
-      component: ArticleDetail
+      component: ArticleDetail,
+      meta: {checkLogin: true}
     },
     {
       path: '/login',
@@ -57,22 +58,26 @@ export default new Router({
     {
       path: '/modify',
       name: 'Modify',
-      component: Modify
+      component: Modify,
+      meta: {checkLogin: true}
     },
     {
       path: '/admin',
       name: 'Admin',
       component: Admin,
+      meta: {checkLogin: true},
       redirect: '/article_center',
       children: [
         {
           path: '/user_center',
           name: 'UserCenter',
+          meta: {checkLogin: true},
           component: UserCenter
         },
         {
           path: '/article_center',
           name: 'ArticleCenter',
+          meta: {checkLogin: true},
           component: ArticleCenter
         }
       ]
@@ -80,3 +85,17 @@ export default new Router({
 
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.checkLogin) {
+    if (checkLogined()) {
+      next();
+    } else {
+      alert('用户未登录');
+      next({path: '/login'});
+    }
+  } else {
+    next();
+  }
+})
+export default router

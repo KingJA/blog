@@ -6,7 +6,7 @@ import {Message} from 'element-ui';
 // 这里的config包含每次请求的内容
 axios.interceptors.request.use(config => {
   config.withCredentials = true;
-  config.baseURL = 'http://127.0.0.1:8088';
+  config.baseURL = 'http://localhost:8088';
   if (localStorage.getItem('jwt')) {
     config.headers.token = `${localStorage.getItem('jwt')}`;
   }

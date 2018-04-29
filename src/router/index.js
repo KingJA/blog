@@ -11,6 +11,7 @@ import UserCenter from '@/components/UserCenter/UserCenter'
 import ArticleCenter from '@/components/ArticleCenter/ArticleCenter'
 import Modify from '@/components/Modify/Modify'
 import {checkLogined} from '@/common/js/userUtils'
+import element from '@/common/js/elementUtils'
 
 Vue.use(Router)
 
@@ -20,7 +21,11 @@ const router = new Router({
     {
       path: '/',
       name: 'Main',
-      component: Main,
+      components: {
+        // 使用命名 named router view 注意路由视图名称不要和路由名相同
+        keepAliveRouter: Main,
+      },
+      // component: Main,
       redirect: '/article',
       children: [
         {
@@ -47,8 +52,7 @@ const router = new Router({
     {
       path: '/detail',
       name: 'ArticleDetail',
-      component: ArticleDetail,
-      meta: {checkLogin: true}
+      component: ArticleDetail
     },
     {
       path: '/login',
@@ -87,12 +91,20 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  console.log("from:" + from.path + " to:" + to.path);
   if (to.meta.checkLogin) {
     if (checkLogined()) {
       next();
     } else {
-      alert('用户未登录');
-      next({path: '/login'});
+      // alert('用户还没未登录');
+      element.alert('提示',"用户还没未登录",function () {
+        next({path: '/login'});
+      });
+
+      // element.alert('提示',"用户还没未登录",function () {
+      //   next({path: '/login'});
+      // })
+
     }
   } else {
     next();

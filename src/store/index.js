@@ -8,6 +8,8 @@ import createLogger from 'vuex/dist/logger'
 /*modules*/
 import articleModule from './modules/article'
 import loginModule from './modules/login'
+import articleDetailModule from './modules/articleDetail'
+import articleCenterModule from './modules/articleCenter'
 
 Vue.use(Vuex)
 
@@ -18,7 +20,7 @@ export default new Vuex.Store({
   getters,
   state,
   mutations,
-  modules: {articleModule, loginModule},
+  modules: {articleModule, loginModule, articleDetailModule, articleCenterModule},
   strict: debug,
   plugins: debug ? [createLogger()] : []
 })

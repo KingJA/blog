@@ -1,23 +1,20 @@
 <template>
   <div class="article_center">
     <!-- If you are using the "Solid" style you can simply use the icon name -->
-    <div class="catelogs">
+    <div class="catelogs" v-loading="isCatalogLoading">
       <ul>
         <li v-for="catalog in catalogs" :class="{ 'item_catelog': true, 'action': catalog.checked}"
-            v-on:click="getArticlesByCatelogid(catalog)">{{catalog.name}}
+            v-on:click="getArticlesByCatelogId(catalog)">{{catalog.name}}
         </li>
       </ul>
-
     </div>
-    <div class="wrap_content" v-loading="loading">
+    <div class="wrap_content" v-loading="isArticleLoading">
       <div class="wrap_write">
         <div class="write" @click="goPublish">
           <font-awesome-icon icon="edit"/>
           <span>写篇文章</span>
         </div>
       </div>
-
-
       <div class="wrap_search">
         <el-input placeholder="请输入搜索内容" v-model="keyword" class="input-with-select">
           <el-select v-model="type" slot="prepend" placeholder="请选择">
@@ -49,9 +46,7 @@
           </div>
         </li>
       </ul>
-
     </div>
-
   </div>
 
 </template>
@@ -59,6 +54,7 @@
 <script type="text/ecmascript-6">
   import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
   import Vue from 'vue'
+  import {mapActions, mapState} from 'vuex'
 
   export default {
     data() {
@@ -68,23 +64,34 @@
         hasResult: false,
         type: '',
         keyword: '',
-        loading: true,
-        articles: [],
-        catalogs: []
+        // loading: true,
+        // articles: [],
+        // catalogs: []
       }
     },
-    computed: {},
+    computed: {
+      ...mapState({
+        isCatalogLoading: ({articleCenterModule}) => articleCenterModule.isCatalogLoading,
+        isArticleLoading: ({articleCenterModule}) => articleCenterModule.isArticleLoading,
+        catalogs: ({articleCenterModule}) => articleCenterModule.catalogs,
+        articles: ({articleCenterModule}) => articleCenterModule.articles,
+      })
+    },
     components: {
       FontAwesomeIcon
     },
     mounted() {
       this.$nextTick(function () {
-        console.log('cookie:' + document.cookie);
-        this.getArticles();
-        this.getCatelogs();
+        this.getAdminnArticles();
+        this.getCatalogs();
       })
     },
     methods: {
+      ...mapActions([
+        'getAdminnArticles',
+        'getArticlesByCatelogId',
+        'getCatalogs'
+      ]),
       goPublish() {
         this.$router.push({name: 'Publish', query: {catalogId: this.currentCatalogId}});
       },
@@ -95,61 +102,61 @@
           return 'eye';
         }
       },
-      getArticles: function () {
-        this.loading = true;
-        this.$http.post("/api/visitor/article/all").then((response) => {
-          if (response.data.resultCode === 0) {
-            this.articles = response.data.resultData;
-          }
-          this.loading = false;
-          this.hasResult = false;
-        }).catch(function (error) {
-          this.loading = false;
-          console.log(error);
-        });
-      },
-      getArticlesByCatelogid: function (catalog) {
-        this.setCatalogAction(catalog);
-        this.currentCatalogId=catalog.id;
-        //如果vuex里有缓存，则取缓存
-        let articles = this.$store.getters.catalog_articles[catalog.id];
-        if (articles) {
-          this.articles = articles;
-          console.log("缓存击中")
-          return;
-        }
-        //vuex中没缓存则进行网络请求
-        this.loading = true;
-        this.$http.post("/api/article/articlesBycatalogId", {
-          catalogid: catalog.id,
-        }).then((response) => {
-          if (response.data.resultCode === 0) {
-            this.articles = response.data.resultData;
-            this.$store.commit('SAVE_ARTICLES_BY_CATALOGID', {
-              catalogid: catalog.id,
-              articles: response.data.resultData
-            });
-          }
-          this.loading = false;
-          this.hasResult = false;
-        }).catch(function (error) {
-          this.loading = false;
-          console.log(error);
-        });
-      },
-      getCatelogs: function () {
-        this.loading = true;
-        this.$http.get("/api/admin/catalog").then((response) => {
-          if (response.data.resultCode === 0) {
-            this.catalogs = response.data.resultData;
-          }
-          this.loading = false;
-          this.hasResult = false;
-        }).catch(function (error) {
-          this.loading = false;
-          console.log(error);
-        });
-      },
+      // getArticles: function () {
+      //   this.loading = true;
+      //   this.$http.post("/api/visitor/article/all").then((response) => {
+      //     if (response.data.resultCode === 0) {
+      //       this.articles = response.data.resultData;
+      //     }
+      //     this.loading = false;
+      //     this.hasResult = false;
+      //   }).catch(function (error) {
+      //     this.loading = false;
+      //     console.log(error);
+      //   });
+      // },
+      // getArticlesByCatelogid: function (catalog) {
+      //   this.setCatalogAction(catalog);
+      //   this.currentCatalogId = catalog.id;
+      //   //如果vuex里有缓存，则取缓存
+      //   let articles = this.$store.getters.catalog_articles[catalog.id];
+      //   if (articles) {
+      //     this.articles = articles;
+      //     console.log("缓存击中")
+      //     return;
+      //   }
+      //   //vuex中没缓存则进行网络请求
+      //   this.loading = true;
+      //   this.$http.post("/api/article/articlesBycatalogId", {
+      //     catalogid: catalog.id,
+      //   }).then((response) => {
+      //     if (response.data.resultCode === 0) {
+      //       this.articles = response.data.resultData;
+      //       this.$store.commit('SAVE_ARTICLES_BY_CATALOGID', {
+      //         catalogid: catalog.id,
+      //         articles: response.data.resultData
+      //       });
+      //     }
+      //     this.loading = false;
+      //     this.hasResult = false;
+      //   }).catch(function (error) {
+      //     this.loading = false;
+      //     console.log(error);
+      //   });
+      // },
+      // getCatelogs: function () {
+      //   this.loading = true;
+      //   this.$http.get("/api/admin/catalog").then((response) => {
+      //     if (response.data.resultCode === 0) {
+      //       this.catalogs = response.data.resultData;
+      //     }
+      //     this.loading = false;
+      //     this.hasResult = false;
+      //   }).catch(function (error) {
+      //     this.loading = false;
+      //     console.log(error);
+      //   });
+      // },
       setCatalogAction(catalog) {
         this.catalogs.forEach((item) => {
           if (catalog == item) {

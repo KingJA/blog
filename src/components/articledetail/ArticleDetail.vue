@@ -1,5 +1,5 @@
 <template>
-  <div class="page_article_detail" v-loading="loading">
+  <div class="page_article_detail" v-loading="isLoading">
     <div class="wrap_detail">
       <p class="title">{{article.title}}</p>
       <div  v-html="article.content" v-highlight class="markdown-body"></div>
@@ -10,35 +10,30 @@
 <script type="text/ecmascript-6">
   import VueMarkdown from 'vue-markdown'
   import marked from 'marked'
+  import {mapActions,mapState} from 'vuex'
   export default {
     data() {
       return {
-        loading: true,
-        article: {}
       }
     },
     mounted: function () {
-      console.log(this.$route.query.id);
-      this.$nextTick(function () {
-        this.getArticle();
+     let articleId= this.$route.query.id;
+     this.getArticleDetail(articleId);
+
+    },
+    computed:{
+      ...mapState({
+        article:({articleDetailModule})=>articleDetailModule.article,
+        isLoading:({articleDetailModule})=>articleDetailModule.isLoading
       })
     },
     components: {
-      VueMarkdown // 声明组件
+      VueMarkdown
     },
     methods: {
-      getArticle: function () {
-        this.$http.get("/api/article/get?id=" + this.$route.query.id).then((response) => {
-          if (response.data.resultCode===0) {
-            this.article = response.data.resultData;
-            this.article.content=marked(this.article.content, { sanitize: true });
-          }
-          this.loading = false;
-        }).catch(function (error) {
-          console.log(error);
-        });
-      }
-    }
+      ...mapActions([
+        'getArticleDetail'
+    ])}
   }
 </script>
 

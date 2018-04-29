@@ -1,35 +1,41 @@
 import {
-  GET_ARTICLE_BY_ARTICLEID,
+  SHOW_LOADING,
+  GET_ARTICLE_BY_ARTICLEID_SUCCESS,
+  GET_ARTICLE_BY_ARTICLEID_FAIL,
 } from '../mutation-types'
 
 import api from '../../../src/api/api'
+import marked from 'marked'
 
 const state = {
   isLoading: false,
-  articleDetail: {}
+  article: {}
 }
 
 const actions = {
-  getArticleDetail({commit}) {
-    commit(GET_ARTICLE_BY_ARTICLEID);
-    api.getArticles()
+  getArticleDetail({commit}, articleId) {
+    commit(SHOW_LOADING);
+    api.getArticleDetail(articleId)
       .then(response => {
-        if (response.data.resultCode===0) {
-          commit(GET_ARTICLES_SUCCESS,response.data.resultData);
-        }
-      }).catch(error=>{
-      commit(GET_ARTICLES_FAIL,error);
+      let article=  response.data.resultData;
+        article.content=marked(article.content, { sanitize: true });
+        commit(GET_ARTICLE_BY_ARTICLEID_SUCCESS, article);
+      }).catch(error => {
+      commit(GET_ARTICLE_BY_ARTICLEID_FAIL, error);
     })
   }
 }
 
 const mutations = {
-  [GET_ARTICLES](state) {
+  [SHOW_LOADING](state) {
     state.isLoading = true;
   },
-  [GET_ARTICLES_SUCCESS](state, articles) {
+  [GET_ARTICLE_BY_ARTICLEID_SUCCESS](state, article) {
     state.isLoading = false;
-    state.articles = articles;
+    state.article = article;
+  },
+  [GET_ARTICLE_BY_ARTICLEID_FAIL](state) {
+    state.isLoading = false;
   }
 }
 

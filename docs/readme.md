@@ -33,3 +33,4 @@ https://www.zhihu.com/question/50268585
 https://www.cnblogs.com/sysuhanyf/p/7454530.html
 * Promise 的使用https://www.cnblogs.com/whybxy/p/7645578.html
 * Axios的封装 https://blog.csdn.net/quanquanxiu/article/details/76718468
+* Computed property*was assigned to but it has no setter.v-model直接VB昂定 计算属性，如果直接用state则报该错误

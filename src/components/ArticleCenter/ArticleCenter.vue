@@ -34,11 +34,11 @@
       </div>
       <ul>
         <li v-for="article in articles" class="item_article">
-          <p class="title">{{article.title}}</p>
+          <p class="title" @click="goDetail(article.id)">{{article.title}}</p>
           <div class="sub_title">
             <span class="date">{{article.createtime}}</span>
             <div class="wrap_op">
-              <font-awesome-icon icon="pen-square" class="ic_op" @click="goDetail(article)"/>
+              <font-awesome-icon icon="pen-square" class="ic_op" @click="modify(article)"/>
               <font-awesome-icon icon="trash" class="ic_op" @click="showDeleteDialog(article)"/>
               <font-awesome-icon :icon="publishStatus(article.published)" class="ic_op"
                                  @click="setPublishStatus(article)"/>
@@ -55,11 +55,12 @@
   import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
   import Vue from 'vue'
   import {mapActions, mapState} from 'vuex'
+  import element from '@/common/js/elementUtils'
 
   export default {
     data() {
       return {
-        currentCatalogId: -1,
+        // currentCatalogId: -1,
         classA: true,
         hasResult: false,
         type: '',
@@ -75,6 +76,7 @@
         isArticleLoading: ({articleCenterModule}) => articleCenterModule.isArticleLoading,
         catalogs: ({articleCenterModule}) => articleCenterModule.catalogs,
         articles: ({articleCenterModule}) => articleCenterModule.articles,
+        currentCatalogId: ({articleCenterModule}) => articleCenterModule.currentCatalogId,
       })
     },
     components: {
@@ -90,17 +92,22 @@
       ...mapActions([
         'getAdminnArticles',
         'getArticlesByCatelogId',
+        'deleteArticle',
+        'setPublishStatus',
         'getCatalogs'
       ]),
       goPublish() {
         this.$router.push({name: 'Publish', query: {catalogId: this.currentCatalogId}});
       },
-      publishStatus: function (published) {
+      publishStatus(published) {
         if (published === 1) {
           return 'eye-slash';
         } else {
           return 'eye';
         }
+      },
+      goDetail(id) {
+        this.$router.push({name: 'ArticleDetail', query: {id: id}});
       },
       // getArticles: function () {
       //   this.loading = true;
@@ -165,33 +172,14 @@
             Vue.set(item, 'checked', false);
           }
         })
-
       },
-      goDetail(article) {
+      modify(article) {
         this.$router.push({name: 'Modify', params: {article: article}});
       },
-      deleteArticle(article) {
-        this.$http.post("/api/article/delete", this.$qs.stringify({
-          id: article.id,
-        })).then((response) => {
-          if (response.data.resultCode === 0) {
-            this.articles.remove(article);
-            this.showSuccess('删除成功');
-          }
-        }).catch(function (error) {
-          console.log(error);
-        });
-      },
       showDeleteDialog(article) {
-        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+        element.confirm('提示', '此操作将永久删除该文件, 是否继续', () => {
           this.deleteArticle(article);
-        }).catch(() => {
-          //取消
-        });
+        })
       },
       showSuccess(msg) {
         this.$notify({
@@ -216,26 +204,20 @@
         });
       },
       //设置发布状态
-      setPublishStatus(article) {
-        this.setProgress(true);
-        this.$http.post('/api/article/published', this.$qs.stringify({id: article.id}))
-          .then((response) => {
-            if (response.data.resultCode === 0) {
-              article.published = this.reversal(article.published);
-            }
-            this.setProgress(false);
-          })
-          .catch((error) => {
-            console.log('error:' + error)
-            this.setProgress(error);
-          });
-      },
-      setProgress(loading) {
-        this.loading = loading;
-      },
-      reversal(status) {
-        return status === 0 ? 1 : 0;
-      }
+      // setPublishStatus(article) {
+      //   this.setProgress(true);
+      //   this.$http.post('/api/article/published', this.$qs.stringify({id: article.id}))
+      //     .then((response) => {
+      //       if (response.data.resultCode === 0) {
+      //         article.published = this.reversal(article.published);
+      //       }
+      //       this.setProgress(false);
+      //     })
+      //     .catch((error) => {
+      //       console.log('error:' + error)
+      //       this.setProgress(error);
+      //     });
+      // },
     }
   }
 </script>

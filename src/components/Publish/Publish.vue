@@ -2,7 +2,7 @@
   <div class="markdown">
     <div class="wrap_input">
       <input type="text" class="title" v-model="title" placeholder="Please input the title...">
-      <el-select v-model="catalogid" placeholder="请选择文章类目" class="selector" v-if="catalogs.length>0">
+      <el-select v-model="catalogId" placeholder="请选择文章类目" class="selector" v-if="catalogs.length>0" value-key="catalogid">
         <el-option
           v-for="catalog in catalogs"
           :key="catalog.id"
@@ -11,16 +11,15 @@
         </el-option>
       </el-select>
     </div>
-
     <div id="editor">
       <mavon-editor style="height: 100%" ref="editor" @save="save"></mavon-editor>
     </div>
   </div>
-
 </template>
 
 <script type="text/ecmascript-6">
   import {mavonEditor} from 'mavon-editor'
+  import {mapActions,mapState,mapMutations} from 'vuex'
   import 'mavon-editor/dist/css/index.css'
 
   export default {
@@ -28,60 +27,35 @@
     data() {
       return {
         title: '',
-        catalogid: 1,
-        catalogs: [],
+        catalogId: 1,
       }
+    },
+    computed:{
+      ...mapState({
+        catalogs: ({articleCenterModule}) => articleCenterModule.catalogs,
+        selectedCatalogId: ({publishModule}) => publishModule.selectedCatalogId
+      })
     },
     components: {
       mavonEditor
     },
-    watch: {
-      '$route'(to, from) {
-        console.log("to:"+to);
-        console.log("from:"+from);
-      },
-      '$route.params.catalogId': function (catalogId) {
-        console.log("watch catalogId:"+catalogId);
-      }
-    },
-    beforeCreate() {
-      console.log("beforeCreate");
-    },
-    created() {
-      console.log("created");
-      this.catalogid = this.$route.query.catalogId;
-      console.log('catalogid' + this.catalogid)
-    },
     mounted() {
-      console.log("mounted");
-      this.$nextTick(function () {
-        this.getCatalogs();
-      })
+      this.catalogId=this.$route.query.catalogId;
+      this.getCatalogs();
     },
     methods: {
+      ...mapActions([
+        'getCatalogs',
+        'publish'
+      ]),
+      ...mapMutations(
+        {setCurrentCatalogId:  'SET_CURRENT_CATALOGID'}
+      ),
       save(value, render) {
-        console.log('name:' + this.catalogId)
-        this.$http.post("/api/article/add", {
+        this.publish({
           title: this.title,
-          catalogid: this.catalogid,
+          catalogid: this.catalogId,
           content: value
-        }).then((response) => {
-          if (response.data.resultCode === 0) {
-            console.log('发布成功:');
-            this.$router.back()
-          }
-        }).catch(function (error) {
-          console.log(error);
-        });
-      },
-      getCatalogs() {
-        this.$http.get("/api/article/catalog").then((response) => {
-          if (response.data.resultCode === 0) {
-            this.catalogs = response.data.resultData;
-            console.log(response.data.resultData)
-          }
-        }).catch(function (error) {
-          console.log(error);
         });
       }
     }
@@ -108,7 +82,6 @@
         color $font_3
         width 100%
         border 0
-
     #editor {
       margin: auto;
       width: 80%;

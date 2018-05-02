@@ -10,6 +10,7 @@ import articleModule from './modules/article'
 import loginModule from './modules/login'
 import articleDetailModule from './modules/articleDetail'
 import articleCenterModule from './modules/articleCenter'
+import publishModule from './modules/publish'
 
 Vue.use(Vuex)
 
@@ -20,7 +21,7 @@ export default new Vuex.Store({
   getters,
   state,
   mutations,
-  modules: {articleModule, loginModule, articleDetailModule, articleCenterModule},
+  modules: {articleModule, loginModule, articleDetailModule, articleCenterModule,publishModule},
   strict: debug,
   plugins: debug ? [createLogger()] : []
 })

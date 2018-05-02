@@ -41,11 +41,6 @@ const router = new Router({
           path: '/contact',
           name: 'Contact',
           component: resolve => require(['@/components/Contact/Contact'], resolve)
-        },
-        {
-          path: '/publish',
-          name: 'Publish',
-          component: Publish
         }
       ]
     },
@@ -68,7 +63,9 @@ const router = new Router({
     {
       path: '/admin',
       name: 'Admin',
-      component: Admin,
+      components: {
+        keepAliveRouter: Admin,
+      },
       meta: {checkLogin: true},
       redirect: '/article_center',
       children: [
@@ -86,7 +83,11 @@ const router = new Router({
         }
       ]
     },
-
+    {
+      path: '/publish',
+      name: 'Publish',
+      component: Publish
+    }
   ]
 })
 
@@ -97,14 +98,9 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       // alert('用户还没未登录');
-      element.alert('提示',"用户还没未登录",function () {
+      element.alert('提示', "用户还没未登录", function () {
         next({path: '/login'});
       });
-
-      // element.alert('提示',"用户还没未登录",function () {
-      //   next({path: '/login'});
-      // })
-
     }
   } else {
     next();

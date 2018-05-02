@@ -17,5 +17,14 @@ export default {
   },
   getArticlesByCatelogId(catalogId) {
     return AxiosClient.post("/api/admin/articles",{catalogId:catalogId});
+  },
+  deleteArticle(id) {
+    return AxiosClient.post("/api/admin/delete",{id:id});
+  },
+  setPublishStatus(id) {
+    return AxiosClient.post("/api/admin/published",{id:id});
+  },
+  publish(article) {
+    return AxiosClient.post("/api/admin/add",article);
   }
 }

@@ -4,7 +4,8 @@ import qs from 'qs'
 // 这里的config包含每次请求的内容
 axios.interceptors.request.use(config => {
   config.withCredentials = true;
-  config.baseURL = 'http://127.0.0.1:8088';
+  // config.baseURL = 'http://127.0.0.1:8088';
+  config.baseURL = 'http://47.95.243.144:8080';
   if (localStorage.getItem('api_token')) {
     config.headers.token = `${localStorage.getItem('api_token')}`;
   }

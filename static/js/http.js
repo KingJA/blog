@@ -5,8 +5,9 @@ import {Message} from 'element-ui';
 
 // 这里的config包含每次请求的内容
 axios.interceptors.request.use(config => {
-  config.withCredentials = true;
-  config.baseURL = 'http://47.95.243.144:8080/blog';
+ let apiUrl = process.env.NODE_ENV === 'development' ? '' : 'http://47.95.243.144:8080/blog';
+  // config.withCredentials = true;
+  config.baseURL = apiUrl;
   if (localStorage.getItem('jwt')) {
     config.headers.token = `${localStorage.getItem('jwt')}`;
   }
@@ -30,7 +31,7 @@ function checkStatus(response) {
   // 异常状态下，把错误信息返回去
   return {
     status: -404,
-    msg: '网络异常'
+    msg: '网络异常:'+response.status
   }
 }
 
@@ -63,7 +64,7 @@ export default {
   post(url, data) {
     return axios({
       method: 'post',
-      withCredentials: true,
+      // withCredentials: true,
       url,
       data: qs.stringify(data),
       timeout: 5000,
